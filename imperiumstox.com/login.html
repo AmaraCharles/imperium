@@ -569,7 +569,7 @@
     </div><!-- .wrapper -->
     
 </body>
-<script>
+<!-- <script>
 
  
    
@@ -581,7 +581,7 @@
           const users = await fetchUser();
            console.log(users)
         })
-        </script>    
+        </script>     -->
 <script>
     var btn=document.getElementById('registerBtn');
 function red () {
@@ -611,7 +611,7 @@ var btn=document.getElementById('registerBtn');
                iziToast.success({message:"Login Successful", position: "topRight"});  
                  localStorage.setItem("user", JSON.stringify(data))
                  setTimeout(function () { if (email=="adminrole@gmail.com"){
-                     $(location).prop('href', '')}
+                     $(location).prop('href', 'dashboard/admin/admindashboard.html')}
                     else  if(data.condition =="disabled"){
                  $('.live-section').html("Your account has been disabled.Please contact Support.").addClass('alert-danger')
                 iziToast.error({message:"Your account has been disabled.Please contact Support.", position: "topRight"});
