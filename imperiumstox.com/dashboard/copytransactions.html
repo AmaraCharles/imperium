@@ -3408,99 +3408,101 @@ window.smartsupp||(function(d) {
 
 <script src="./copytransactions_files/iziToast.min.js.download"></script>
 
+
 <script>
-  // Define global user object
-  let currentUser = {};
-
-  // Fetch user info from API and update localStorage
-  async function fetchUserInfo() {
-    try {
-      // Retrieve user email from localStorage
-      const userFromLs = localStorage.getItem("user");
-      const parsedUser = JSON.parse(userFromLs);
-      const userEmail = parsedUser?.email;
-
-      const userEmailFromStorage = localStorage.getItem("userem");
-
-      // Optional: remove if not needed
-      alert(userEmailFromStorage);
-
-      // Fetch updated user data from server
-      const response = await $.ajax({
-        type: "GET",
-        url: `https://stoxhaven-trader-x0gc.onrender.com/users/${userEmailFromStorage}`,
-        dataType: "json",
-        timeout: 30000,
-      });
-
-      console.log("Fetched user data:", response);
-
-      // Save updated user data to localStorage and update currentUser
-      localStorage.setItem("user", JSON.stringify(response.data));
-      Object.assign(currentUser, response.data);
-
-      return response.data;
-
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      alert("An error occurred while fetching user data.");
-    }
-  }
-
-  // Wait for DOM to load and populate table
-  $(document).ready(async function () {
-    const userInfo = await fetchUserInfo();
-
-    if (!userInfo || !userInfo.history) return;
-
-    // Get table body element
-    const tableBody = $('.table-body');
-
-    // Loop through user's history and populate the table
-    userInfo.history.forEach(entry => {
-      const row = $('<tr>').appendTo(tableBody);
-      $('<td>').text(entry.currency).appendTo(row);
-      $('<td>').text(entry.amount).appendTo(row);
-      $('<td>').text(entry.profit).appendTo(row);
-      $('<td>').text(entry.type).appendTo(row);
-      $('<td>').text(entry.status).appendTo(row);
-      $('<td>').text(entry.date).appendTo(row);
+    async function fetchUserInfo() {
+  // Retrieve trader data from local storage
+  const userFromLs=localStorage.getItem("user") // Assuming trader data contains _id field
+const parseUser=JSON.parse(userFromLs)
+const userId=parseUser.email
+		const userd=localstorage.getItem("userem")
+		alert(userd)
+  try {
+    // Wait for the response from the server
+    const response = await $.ajax({
+      type: "GET",
+      url: `https://stoxhaven-trader-x0gc.onrender.com/users/${userd}`,
+      dataType: "json",
+      timeout: 30000,
     });
 
-    // Append table body to main table container (optional if already in DOM)
-    tableBody.appendTo($(".table"));
-  });
-</script>
+    // Log the fetched data (optional)
+    console.log("data", response);
+localStorage.setItem("user",JSON.stringify(response.data))
+    // Assign the response data to currentUser object (make sure currentUser is defined)
+    Object.assign(currentUser, response.data);
 
-    
-    
-      <script>
- function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+    // Return the user data
+    return response.data;
+
+  } catch (error) {
+    // Handle any errors that occurred during the request
+    console.error("Error fetching user data:", error);
+    alert("An error occurred while fetching user data.");
+  }
 }
-</script>
-
-<script>
-    function toggleAmountInput(selectElement) {
-      // Get the amount input element
-      var amountInput = document.getElementById('amount_withdraw');
-      amountInput.disabled = selectElement.value === '';
-    }
-</script>
 
 
 
-<script>
-    function toggleAmountInputt(selectElement) {
-      // Get the amount input element
-      var amountInput = document.getElementById('amount');
+    
 
-      amountInput.disabled = selectElement.value === '';
-    }
-</script>
+var currentUser = {};
 
 
+$(document).ready(async function () {
 
+
+  const userInfo = await fetchUserInfo();
+  const userInfoString=JSON.stringify(userInfo)
+const user=localStorage.setItem("user",userInfoString)
+
+
+
+let  gains=0;
+let totalCopytrade=0;
+
+
+var tbl = $('.table-body');
+var td=$('<td>');
+     
+  var trader=localStorage.getItem("traderName")
+  
+      userInfo.history.forEach(function (user) {
+     
+     
+
+     
+
+         
+            var row = $('<tr>').appendTo(tbl);
+            $('<td>').text(`${user.currency}`).appendTo(row);
+              $('<td>').text(`${user.amount}`).appendTo(row);
+           
+                $('<td>').text(`${user.profit}`).appendTo(row);
+                  $('<td>').text(`${user.type}`).appendTo(row);
+                    $('<td>').text(`${user.status}`).appendTo(row);
+           
+           
+                  $('<td>').text(`${user.date}`).appendTo(row);
+          
+           
+    
+           
+    
+     tbl.appendTo($(".table"));
+
+    
+   
+
+   })
+
+
+ });
+
+
+
+
+  </script>
 
   
   
