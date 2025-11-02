@@ -838,7 +838,7 @@
     async function fetchUser() {
           const response = await $.ajax({
             type: "GET",
-            url: '  https://stoxhaven-render-w08x.onrender.com/users',
+            url: '  https://stoxhaven-render-b83aabc781bc.herokuapp.com/users',
             dataType: "json",
             timeout: 30000,
           });
@@ -881,7 +881,7 @@
            async function registerUser(values) {
                await $.ajax({
                    type: "POST",
-                   url: "  https://stoxhaven-render-w08x.onrender.com/auth/register",
+                   url: "  https://stoxhaven-render-b83aabc781bc.herokuapp.com/auth/register",
                    dataType: "json",
                    data: { ...values },
                    timeout: 30000,
