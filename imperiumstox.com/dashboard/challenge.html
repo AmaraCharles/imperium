@@ -4368,7 +4368,8 @@
 
         .modal-title {
           margin: 0;
-          line-height: 1.42857143
+          line-height: 1.42857143;
+          color:#fff
         }
 
         .modal-body {
@@ -4460,20 +4461,406 @@
       <div class="wallets">
         <div class="wallets__container" style="padding: 20px!important;">
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<style>
+/* ===== Dashboard Layout ===== */
+body {
+  background: #0b0b0d;
+  color: #f1f1f1;
+  font-family: "Poppins", sans-serif;
+}
+.container {
+  max-width: 1200px;
+  margin-top: 2rem;
+}
 
+/* Challenge Balance */
+#challengeBalanceBox {
+  font-size: 1.3rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #0b3559, #1e40af);
+  padding: 15px 20px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
 
-          <div class="alert alert-warning alert-dismissible fade show"style="display:none" id="empty-balance" role="alert">
-            <span>Empty Balance! Your balance is empty. Please make <a href="deposit.html"
-                class="link-color">deposit</a> for your next investment.</span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true" style="font-size: 30px!important;">×</span>
-            </button>
+/* Available Challenges Cards */
+.card.challenge-card {
+  background: linear-gradient(135deg, #1e3a8a, #1e293b);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  transition: all 0.3s ease-in-out;
+}
+.card.challenge-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+.card.challenge-card h4 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+.card.challenge-card p {
+  font-size: 0.95rem;
+  color: #dbeafe;
+}
+.card.challenge-card .btn-custom {
+  background: #10b981;
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.25s ease;
+}
+.card.challenge-card .btn-custom:hover {
+  background: #059669;
+  box-shadow: 0 0 15px rgba(16,185,129,0.6);
+}
+
+/* My Challenges Cards */
+.card.my-challenge-card {
+  background: linear-gradient(135deg, #0b3559, #1e293b);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  transition: all 0.3s ease;
+}
+.progress {
+  height: 10px;
+  border-radius: 6px;
+  background: #e5e7eb;
+}
+.progress-bar {
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Modals */
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  background: #0b0b0d;
+  color: #f1f1f1;
+}
+.modal-header {
+  border-bottom: 1px solid #2f98ee;
+}
+.modal-footer {
+  border-top: 1px solid #2f98ee;
+}
+
+/* Buttons inside modals */
+.btn-success, .btn-warning {
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  #challengeBalanceBox {
+    font-size: 1.1rem;
+    padding: 12px 15px;
+  }
+}
+</style>
+</head>
+<body>
+  <section class="mt-5">
+      <h2 class="section-title"><i class="fa-solid fa-chart-line"></i> My Challenges</h2>
+      <div id="myChallenges" class="row g-4"></div>
+      <br>
+      <br>
+      <div class="d-flex gap-2"style="margin-left:20px">
+    <!-- Fund Button -->
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#fundModal">
+      <i class="fa-solid fa-wallet me-1"></i> Fund
+    </button>
+
+    <!-- Withdraw Button -->
+    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#withdrawModal">
+      <i class="fa-solid fa-money-bill-wave me-1"></i> Withdraw
+    </button>
+  </div>
+    </section>
+    <!-- Imperiumstox Trading Challenge Modal -->
+<div class="modal fade" id="imperiumChallengeModal" tabindex="-1" aria-labelledby="imperiumChallengeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="background-color:#0b0b0d; color:#f1f1f1; border-radius:18px; border:1px solid #2f98ee;">
+      
+      <!-- Header -->
+      <div class="modal-header" style="border-bottom:1px solid #2f98ee;">
+        <h4 class="modal-title fw-bold" id="imperiumChallengeLabel" style="color:#f1f6fb;">
+          IMPERIUMSTOX TRADING CHALLENGE
+        </h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      
+      <!-- Body -->
+      <div class="modal-body">
+        <p class="lead mb-3">
+          Welcome to the <strong>Imperiumstox Trading Challenge</strong> — an exclusive opportunity to prove your trading skill, discipline, and strategy.
+        </p>
+
+        <p>
+          This challenge is designed to simulate real trading conditions while testing your ability to meet profit targets within a defined period. 
+          To participate, each user must subscribe to a verified trader who maintains a consistent win rate that aligns with their selected challenge level.
+        </p>
+
+        <div class="alert alert-warning mt-3" style="background-color:#141414; border-color:#2f98ee; color:#2f98ee;">
+          ⚠️ <strong>Important:</strong> Failure to reach the minimum expected profit after the challenge duration 
+          will result in the <strong>forfeiture of your Tution Fee.</strong>
+        </div>
+
+        <hr class="my-4" style="border-color:#2f98ee;">
+
+        <h5 class="fw-bold" style="color:#2f98ee;">How the Challenge Works</h5>
+        <ol class="mt-3">
+          <li>Choose a <strong>verified trader</strong> with a public win rate that matches your preferred challenge.</li>
+          <li>Request and fill out your <strong>Challenge Application Form</strong> from that trader.</li>
+          <li>The form requires basic details such as your name, location, trading experience, and membership level.</li>
+          <li>You’ll also be asked short questions about your trading goals, risk tolerance, and intended investment plan.</li>
+          <li>Once completed, submit the form and proceed to pay the <strong>challenge Tution Fee</strong>.</li>
+          <li>Trade using a legitimate account during your challenge period.</li>
+          <li>Meet or exceed the profit target to successfully complete your challenge.</li>
+        </ol>
+
+        <hr class="my-4" style="border-color:#2f98ee;">
+
+        <h5 class="fw-bold" style="color:#2f98ee;">Challenge Application Form Overview</h5>
+        <p>
+          The Challenge Form you’ll receive from your trader contains:
+        </p>
+        <ul>
+          <li><strong>Personal Information</strong> — Full Name, Date of Birth, Contact, Nationality, and Address.</li>
+          <li><strong>Membership Level</strong> — Starter, Premium, Professional, Master, or Ultimate.</li>
+          <li><strong>Trading Experience</strong> — from less than a year to 2+ years.</li>
+          <li><strong>Trading Survey</strong> — Questions about your trader, financial goals, and investment preferences.</li>
+          <li><strong>Declaration</strong> — Your signed confirmation that you understand the rules and terms of participation.</li>
+        </ul>
+
+        <p class="mt-3">
+          Be sure to complete this form accurately and review your trader’s terms before proceeding with your Tution Fee payment.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer" style="border-top:1px solid #2f98ee;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(() => {
+      const challengeModal = new bootstrap.Modal(document.getElementById('imperiumChallengeModal'), {
+        backdrop: 'static',
+        keyboard: false
+      });
+      challengeModal.show();
+    }, 2000); // 2-second delay
+  });
+</script>
+
+<div class="container">
+
+  <!-- Challenge Balance -->
+  <div id="challengeBalanceBox">
+    <i class="fa-solid fa-coins me-2 text-warning"></i> Challenge Balance: $0
+  </div>
+
+  <!-- Available Challenges Section -->
+  <section>
+    <h3 class="mt-4 mb-3"><i class="fa-solid fa-list"></i> Available Challenges</h3>
+    <div id="challengesList" class="row g-4"></div>
+  </section>
+
+  <!-- My Challenges Section -->
+  <section class="mt-5">
+    <h3 class="mb-3"><i class="fa-solid fa-chart-line"></i> My Challenges</h3>
+    <div id="myChallenges" class="row g-4"></div>
+  </section>
+
+</div>
+
+<!-- Fund Modal -->
+<div class="modal fade" id="fundModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-3">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title"><i class="fa-solid fa-wallet me-2"></i> Fund Challenge Balance</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label>Amount</label>
+        <input type="number" id="fundAmount" class="form-control" placeholder="Enter amount">
+        <label class="mt-2">Network</label>
+        <select id="networkSelect" class="form-select">
+          <option value="">-- Choose Network --</option>
+          <option value="BTC">Bitcoin (BTC)</option>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="USDT-ERC20">Tether (USDT - ERC20)</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="fundBalance()">Fund</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Withdraw Modal -->
+<div class="modal fade" id="withdrawModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-3">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title"><i class="fa-solid fa-money-bill-wave me-2"></i> Withdraw Challenge Balance</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label>Amount</label>
+        <input type="number" id="withdrawAmount" class="form-control" placeholder="Enter amount">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-warning" onclick="withdrawBalance()">Withdraw</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS + jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your JS -->
+<script>
+let currentUser = {};
+const challenges = [
+  { id: 1, accountSize: 10000, profitTarget: 1000, price: 50, country: "US" },
+  { id: 2, accountSize: 5000, profitTarget: 500, price: 25, country: "UK" },
+  { id: 3, accountSize: 20000, profitTarget: 2000, price: 100, country: "DE" }
+];
+
+// Simulate localStorage user if not exists
+if (!localStorage.getItem("user")) {
+  const demoUser = { _id: "user123", firstName: "Test", challengeBalance: 5000, challenges: [], challengeProfit: 0 };
+  localStorage.setItem("user", JSON.stringify(demoUser));
+}
+
+let user = JSON.parse(localStorage.getItem("user"));
+
+function renderBalance() {
+  document.getElementById("challengeBalanceBox").innerHTML = `<i class="fa-solid fa-coins me-2 text-warning"></i> Challenge Balance: $${user.challengeBalance}`;
+}
+
+function renderChallenges() {
+  const challengesList = document.getElementById("challengesList");
+  challengesList.innerHTML = "";
+  challenges.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "col-12 col-md-6 col-lg-4";
+    div.innerHTML = `
+      <div class="card challenge-card p-4 h-100">
+        <h4>${c.country} Challenge</h4>
+        <p><strong>Account Size:</strong> $${c.accountSize}</p>
+        <p><strong>Profit Target:</strong> $${c.profitTarget}</p>
+        <p><strong>Price:</strong> $${c.price}</p>
+        <button class="btn btn-custom mt-2" onclick="joinChallenge(${c.id})">
+          <i class="fa-solid fa-door-open"></i> Join Challenge
+        </button>
+      </div>
+    `;
+    challengesList.appendChild(div);
+  });
+}
+
+function renderMyChallenges() {
+  const myList = document.getElementById("myChallenges");
+  myList.innerHTML = "";
+  user.challenges.forEach(mc => {
+    const progressPercent = Math.min((user.challengeProfit / mc.profitTarget) * 100, 100).toFixed(1);
+    const div = document.createElement("div");
+    div.className = "col-12 col-md-6 col-lg-4";
+    div.innerHTML = `
+      <div class="card my-challenge-card p-4 h-100">
+        <h4>${mc.country} Challenge</h4>
+        <p><strong>Progress:</strong> $${user.challengeProfit} / $${mc.profitTarget}</p>
+        <div class="progress mb-2">
+          <div class="progress-bar bg-success" role="progressbar" style="width: ${progressPercent}%">
+            ${progressPercent}%
           </div>
+        </div>
+        <p><strong>Days Left:</strong> ${mc.duration}</p>
+        <button class="btn btn-success mt-2" onclick="claimReward(${mc.id})" ${user.challengeProfit < mc.profitTarget ? "disabled" : ""}>
+          <i class="fa-solid fa-trophy"></i> Claim Reward
+        </button>
+      </div>
+    `;
+    myList.appendChild(div);
+  });
+}
 
+function joinChallenge(id) {
+  const challenge = challenges.find(c => c.id === id);
+  if (!challenge) return;
 
+  if (user.challengeBalance < challenge.price) {
+    Swal.fire("Insufficient Balance", "Please fund your challenge balance.", "error");
+    return;
+  }
 
+  user.challengeBalance -= challenge.price;
+  const joinedChallenge = { ...challenge, joinedAt: new Date() };
+  user.challenges.push(joinedChallenge);
+  localStorage.setItem("user", JSON.stringify(user));
+  renderBalance();
+  renderMyChallenges();
+  Swal.fire("Joined!", `You successfully joined ${challenge.country} Challenge.`, "success");
+}
 
+function claimReward(id) {
+  Swal.fire("Reward Claimed!", "You have successfully claimed your reward.", "success");
+}
+
+function fundBalance() {
+  const amount = parseFloat(document.getElementById("fundAmount").value);
+  if (isNaN(amount) || amount <= 0) return Swal.fire("Invalid Amount", "Enter a valid amount.", "error");
+  user.challengeBalance += amount;
+  localStorage.setItem("user", JSON.stringify(user));
+  renderBalance();
+  bootstrap.Modal.getInstance(document.getElementById("fundModal")).hide();
+  Swal.fire("Success!", `Balance funded $${amount}`, "success");
+}
+
+function withdrawBalance() {
+  const amount = parseFloat(document.getElementById("withdrawAmount").value);
+  if (isNaN(amount) || amount <= 0 || amount > user.challengeBalance) return Swal.fire("Invalid Amount", "Check your balance.", "error");
+  user.challengeBalance -= amount;
+  localStorage.setItem("user", JSON.stringify(user));
+  renderBalance();
+  bootstrap.Modal.getInstance(document.getElementById("withdrawModal")).hide();
+  Swal.fire("Success!", `You withdrew $${amount}`, "success");
+}
+
+// Initialize
+renderBalance();
+renderChallenges();
+renderMyChallenges();
+</script>
 
 
 
@@ -4496,1047 +4883,19 @@
       <div class="wallets">
 
 
-        <div class="wallets__container">
-          <div class="slider__container">
-            <div class="wallets__wrapper">
-              <div class="wallets__row">
-                <div class="wallets__total">
-                  <div class="wallets__title h6">Total Balance</div>
-                  <div class="wallets__flex">
-                    <div class="wallets__number h3" id="accountBalance"></div>
-                    <div class="wallets__currency">USD</div>
-                  </div>
-                  <div class="wallets__price h5 color-gray" id="btc"></div>
-                </div>
-              </div>
-              <div class="wallets__inner">
-                <div class="wallets__list">
-                  <div class="wallets__item show__mobile"
-                    style="display: flex; justify-content: space-around!important;">
-                    <a href="withdraw.html" class="wallets__btn btn btn_blue">
-                      <i class="fas fa-arrow-circle-up"></i>
-                      <span class="btn__text">Withdraw</span>
-                    </a>
-                    <a href="deposit.html" class="wallets__btn btn btn_border prev_button">
-                      <i class="fas fa-arrow-circle-down"></i>
-                      <span class="btn__text">Deposit</span>
-                    </a>
-                  </div>
-                  <div class="wallets__item show__mobile"
-                    style="display: flex; justify-content: space-around!important;">
-                    <br><br>
-                    <span class="verifyhide " style="display: flex; justify-content: space-between;"
-                      data-bs-toggle="tooltip" data-bs-title="Your current rank is Silver" data-bs-original-title=""
-                      title="">
-                      <span style="margin-top: 15px;"> Your Current Rank : <span
-                          class="popup__text h6">Silver</span></span>
-                      <img src="./dashboard_files/6665c73899e191717946168.png" alt="" width="50px">
-                    </span>
-                  </div>
-                  <div class="wallets__item">
-                    <div class="wallets__icon"><img src="./dashboard_files/circle-purple.svg" alt=""></div>
-                    <div class="wallets__details">
-                      <div class="wallets__info">Deposits</div>
-                      <div class="wallets__number h6" id="totalDeposited"></div>
-                    </div>
-                  </div>
-                  <div class="wallets__item">
-                    <div class="wallets__icon"><img src="./dashboard_files/circle-blue.svg" alt=""></div>
-                    <div class="wallets__details">
-                      <div class="wallets__info">Interest Balances</div>
-                      <div class="wallets__number h6" id="profit"></div>
-                    </div>
-                  </div>
-                  <div class="wallets__item hid__item">
-                    <div class="wallets__icon"><img src="./dashboard_files/circle-purple.svg" alt=""></div>
-                    <div class="wallets__details">
-                      <div class="wallets__info">Total Withdrawal</div>
-                      <div class="wallets__number h6" id="totalWithdrawn"></div>
-                    </div>
-                  </div>
-                  <div class="wallets__item hid__item">
-                    <div class="wallets__icon"><img src="./dashboard_files/circle-blue.svg" alt=""></div>
-                    <div class="wallets__details">
-                      <div class="wallets__info">Trade Interest</div>
-                      <div class="wallets__number h6" id="profit2"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="wallets__btns">
-                <a href="./withdraw.html" class="wallets__btn btn btn_blue">
-                  <svg class="icon">
-                    <use xlink:href="http://Imperiumstox.com/dashcss/assets/newBack/img/sprite.svg#icon-withdraw"></use>
-                  </svg>
-                  <span class="btn__text">Withdraw</span>
-                </a>
-                <a href="deposit.html" class="wallets__btn btn btn_border prev_button">
-                  <svg class="icon">
-                    <use xlink:href="http://Imperiumstox.com/dashcss/assets/newBack/img/sprite.svg#icon-deposit"></use>
-                  </svg>
-                  <span class="btn__text">Deposit</span>
-                </a>
-                <br><br>
-                <span class="verifyhide" style="display: flex; justify-content: space-between;" data-bs-toggle="tooltip"
-                  data-bs-title="Your current rank is Silver" data-bs-original-title="" title="">
-                  <span style="margin-top: 15px;"> Your Current Rank : <span class="popup__text h6">Silver</span></span>
-                  <img src="./dashboard_files/6665c73899e191717946168.png" alt="" width="50px">
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+       
 
 
 
 
+
+
+
+
+        
       </div>
-      <div class="page__row">
-        <div class="page__col">
-          <div class="widgets">
-            <!-- TradingView Widget BEGIN -->
-            <div class="tradingview-widget-container sidebar__pic_light" style="width: 100%; height: 400px;">
-              <iframe scrolling="no" allowtransparency="true" frameborder="0"
-                src="./dashboard_files/saved_resource.html" title="symbol overview TradingView widget" lang="en"
-                style="user-select: none; box-sizing: border-box; display: block; height: 100%; width: 100%;"></iframe>
-
-              <style>
-                .tradingview-widget-copyright {
-                  font-size: 13px !important;
-                  line-height: 32px !important;
-                  text-align: center !important;
-                  vertical-align: middle !important;
-                  /* @mixin sf-pro-display-font; */
-                  font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important;
-                  color: #B2B5BE !important;
-                }
-
-                .tradingview-widget-copyright .blue-text {
-                  color: #2962FF !important;
-                }
-
-                .tradingview-widget-copyright a {
-                  text-decoration: none !important;
-                  color: #B2B5BE !important;
-                }
-
-                .tradingview-widget-copyright a:visited {
-                  color: #B2B5BE !important;
-                }
-
-                .tradingview-widget-copyright a:hover .blue-text {
-                  color: #1E53E5 !important;
-                }
-
-                .tradingview-widget-copyright a:active .blue-text {
-                  color: #1848CC !important;
-                }
-
-                .tradingview-widget-copyright a:visited .blue-text {
-                  color: #2962FF !important;
-                }
-              </style>
-            </div>
-            <!-- TradingView Widget END -->
-
-
-
-            <!-- TradingView Widget BEGIN -->
-            <div class="tradingview-widget-container sidebar__pic_dark" style="width: 100%; height: 400px;">
-              <iframe scrolling="no" allowtransparency="true" frameborder="0"
-                src="./dashboard_files/saved_resource(1).html" title="symbol overview TradingView widget" lang="en"
-                style="user-select: none; box-sizing: border-box; display: block; height: 100%; width: 100%;"></iframe>
-
-              <style>
-                .tradingview-widget-copyright {
-                  font-size: 13px !important;
-                  line-height: 32px !important;
-                  text-align: center !important;
-                  vertical-align: middle !important;
-                  /* @mixin sf-pro-display-font; */
-                  font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important;
-                  color: #B2B5BE !important;
-                }
-
-                .tradingview-widget-copyright .blue-text {
-                  color: #2962FF !important;
-                }
-
-                .tradingview-widget-copyright a {
-                  text-decoration: none !important;
-                  color: #B2B5BE !important;
-                }
-
-                .tradingview-widget-copyright a:visited {
-                  color: #B2B5BE !important;
-                }
-
-                .tradingview-widget-copyright a:hover .blue-text {
-                  color: #1E53E5 !important;
-                }
-
-                .tradingview-widget-copyright a:active .blue-text {
-                  color: #1848CC !important;
-                }
-
-                .tradingview-widget-copyright a:visited .blue-text {
-                  color: #2962FF !important;
-                }
-              </style>
-            </div>
-            <!-- TradingView Widget END -->
-
-            <br>
-            <div class="widgets__sorting">
-              <div class="widgets__select mobile-show"><select class="select">
-                  <option>Core Assets</option>
-                </select></div>
-              <div class="widgets__variants mobile-hide"><a class="widgets__link active"
-                  href="dashboard.html#">Core Assets</a><a class="widgets__link"
-                  href="dashboard.html#">Top Gainers</a><a class="widgets__link"
-                  href="dashboard.html#">Top Losers</a><a class="widgets__link"
-                  href="dashboard.html#">New</a></div>
-              <div class="widgets__select"><select class="select select_empty">
-                  <option>Market Cap</option>
-                </select></div>
-            </div>
-            <div class="widgets__list">
-
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/tesla.svg" alt=""
-                        style="border-radius: 50%;"></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">TESLA</div>
-                      <div class="widgets__info">TSLA</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">182.65USD</div>
-                    <div class="status positive">+0.96%</div>
-                  </div>
-                  <div class="widgets__chart" style="position: relative;">
-                    <div id="spark-3" style="min-height: 92px;">
-                      <div id="apexcharts12khq4a7" class="apexcharts-canvas apexcharts12khq4a7 apexcharts-theme-light"
-                        style="width: 216px; height: 92px;"><svg id="SvgjsSvg1101" width="216" height="92"
-                          xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS"
-                          transform="translate(0, 0)" style="background: transparent;">
-                          <g id="SvgjsG1103" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)">
-                            <defs id="SvgjsDefs1102">
-                              <clippath id="gridRectMask12khq4a7">
-                                <rect id="SvgjsRect1119" width="222" height="94" x="-3" y="-1" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                              <clippath id="gridRectMarkerMask12khq4a7">
-                                <rect id="SvgjsRect1120" width="220" height="96" x="-2" y="-2" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                            </defs>
-                            <line id="SvgjsLine1110" x1="0" y1="0" x2="0" y2="92" stroke="#b6b6b6" stroke-dasharray="3"
-                              class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="92" fill="#b1b9c4"
-                              filter="none" fill-opacity="0.9" stroke-width="1"></line>
-                            <g id="SvgjsG1127" class="apexcharts-xaxis" transform="translate(0, 0)">
-                              <g id="SvgjsG1128" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g>
-                            </g>
-                            <g id="SvgjsG1130" class="apexcharts-grid">
-                              <g id="SvgjsG1131" class="apexcharts-gridlines-horizontal" style="display: none;">
-                                <line id="SvgjsLine1133" x1="0" y1="0" x2="216" y2="0" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1134" x1="0" y1="9.2" x2="216" y2="9.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1135" x1="0" y1="18.4" x2="216" y2="18.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1136" x1="0" y1="27.599999999999998" x2="216" y2="27.599999999999998"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1137" x1="0" y1="36.8" x2="216" y2="36.8" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1138" x1="0" y1="46" x2="216" y2="46" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1139" x1="0" y1="55.2" x2="216" y2="55.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1140" x1="0" y1="64.4" x2="216" y2="64.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1141" x1="0" y1="73.60000000000001" x2="216" y2="73.60000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1142" x1="0" y1="82.80000000000001" x2="216" y2="82.80000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1143" x1="0" y1="92.00000000000001" x2="216" y2="92.00000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                              </g>
-                              <g id="SvgjsG1132" class="apexcharts-gridlines-vertical" style="display: none;"></g>
-                              <line id="SvgjsLine1145" x1="0" y1="92" x2="216" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                              <line id="SvgjsLine1144" x1="0" y1="1" x2="0" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                            </g>
-                            <g id="SvgjsG1122" class="apexcharts-line-series apexcharts-plot-series">
-                              <g id="SvgjsG1123" class="apexcharts-series" seriesName="Sales" data:longestSeries="true"
-                                rel="1" data:realIndex="0">
-                                <path id="SvgjsPath1126"
-                                  d="M0 34.499999999999986C12.6 34.499999999999986 23.4 -1.4210854715202004e-14 36 -1.4210854715202004e-14C48.6 -1.4210854715202004e-14 59.4 45.99999999999999 72 45.99999999999999C84.6 45.99999999999999 95.4 45.99999999999999 108 45.99999999999999C120.6 45.99999999999999 131.4 57.49999999999999 144 57.49999999999999C156.6 57.49999999999999 167.4 11.499999999999986 180 11.499999999999986C192.6 11.499999999999986 203.4 22.999999999999986 216 22.999999999999986C216 22.999999999999986 216 22.999999999999986 216 22.999999999999986 "
-                                  fill="none" fill-opacity="1" stroke="rgba(61,186,162,1)" stroke-opacity="1"
-                                  stroke-linecap="butt" stroke-width="2" stroke-dasharray="0" class="apexcharts-line"
-                                  index="0" clip-path="url(#gridRectMask12khq4a7)"
-                                  pathTo="M 0 34.499999999999986C 12.6 34.499999999999986 23.4 -1.4210854715202004e-14 36 -1.4210854715202004e-14C 48.6 -1.4210854715202004e-14 59.4 45.99999999999999 72 45.99999999999999C 84.6 45.99999999999999 95.4 45.99999999999999 108 45.99999999999999C 120.6 45.99999999999999 131.4 57.49999999999999 144 57.49999999999999C 156.6 57.49999999999999 167.4 11.499999999999986 180 11.499999999999986C 192.6 11.499999999999986 203.4 22.999999999999986 216 22.999999999999986"
-                                  pathFrom="M -1 92L -1 92L 36 92L 72 92L 108 92L 144 92L 180 92L 216 92"></path>
-                                <g id="SvgjsG1124" class="apexcharts-series-markers-wrap" data:realIndex="0"></g>
-                              </g>
-                              <g id="SvgjsG1125" class="apexcharts-datalabels" data:realIndex="0"></g>
-                            </g>
-                            <line id="SvgjsLine1146" x1="0" y1="0" x2="216" y2="0" stroke="#b6b6b6" stroke-dasharray="0"
-                              stroke-width="1" class="apexcharts-ycrosshairs"></line>
-                            <line id="SvgjsLine1147" x1="0" y1="0" x2="216" y2="0" stroke-dasharray="0" stroke-width="0"
-                              class="apexcharts-ycrosshairs-hidden"></line>
-                            <g id="SvgjsG1148" class="apexcharts-yaxis-annotations"></g>
-                            <g id="SvgjsG1149" class="apexcharts-xaxis-annotations"></g>
-                            <g id="SvgjsG1150" class="apexcharts-point-annotations"></g>
-                          </g>
-                          <rect id="SvgjsRect1109" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1"
-                            stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect>
-                          <g id="SvgjsG1129" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g>
-                          <g id="SvgjsG1104" class="apexcharts-annotations"></g>
-                        </svg>
-                        <div class="apexcharts-legend"></div>
-                      </div>
-                    </div>
-                    <div class="resize-triggers">
-                      <div class="expand-trigger">
-                        <div style="width: 217px; height: 93px;"></div>
-                      </div>
-                      <div class="contract-trigger"></div>
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/amazon.svg" alt=""
-                        style="border-radius: 50%;"></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">AMAZON</div>
-                      <div class="widgets__info">AMZN</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">167.86 USD</div>
-                    <div class="status negative">-1.46%%</div>
-                  </div>
-                  <div class="widgets__chart" style="position: relative;">
-                    <div id="spark-4" style="min-height: 92px;">
-                      <div id="apexcharts0rcqe0bd" class="apexcharts-canvas apexcharts0rcqe0bd apexcharts-theme-light"
-                        style="width: 216px; height: 92px;"><svg id="SvgjsSvg1356" width="216" height="92"
-                          xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS"
-                          transform="translate(0, 0)" style="background: transparent;">
-                          <g id="SvgjsG1358" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)">
-                            <defs id="SvgjsDefs1357">
-                              <clippath id="gridRectMask0rcqe0bd">
-                                <rect id="SvgjsRect1374" width="222" height="94" x="-3" y="-1" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                              <clippath id="gridRectMarkerMask0rcqe0bd">
-                                <rect id="SvgjsRect1375" width="220" height="96" x="-2" y="-2" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                            </defs>
-                            <line id="SvgjsLine1365" x1="0" y1="0" x2="0" y2="92" stroke="#b6b6b6" stroke-dasharray="3"
-                              class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="92" fill="#b1b9c4"
-                              filter="none" fill-opacity="0.9" stroke-width="1"></line>
-                            <g id="SvgjsG1382" class="apexcharts-xaxis" transform="translate(0, 0)">
-                              <g id="SvgjsG1383" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g>
-                            </g>
-                            <g id="SvgjsG1385" class="apexcharts-grid">
-                              <g id="SvgjsG1386" class="apexcharts-gridlines-horizontal" style="display: none;">
-                                <line id="SvgjsLine1388" x1="0" y1="0" x2="216" y2="0" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1389" x1="0" y1="9.2" x2="216" y2="9.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1390" x1="0" y1="18.4" x2="216" y2="18.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1391" x1="0" y1="27.599999999999998" x2="216" y2="27.599999999999998"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1392" x1="0" y1="36.8" x2="216" y2="36.8" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1393" x1="0" y1="46" x2="216" y2="46" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1394" x1="0" y1="55.2" x2="216" y2="55.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1395" x1="0" y1="64.4" x2="216" y2="64.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1396" x1="0" y1="73.60000000000001" x2="216" y2="73.60000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1397" x1="0" y1="82.80000000000001" x2="216" y2="82.80000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1398" x1="0" y1="92.00000000000001" x2="216" y2="92.00000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                              </g>
-                              <g id="SvgjsG1387" class="apexcharts-gridlines-vertical" style="display: none;"></g>
-                              <line id="SvgjsLine1400" x1="0" y1="92" x2="216" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                              <line id="SvgjsLine1399" x1="0" y1="1" x2="0" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                            </g>
-                            <g id="SvgjsG1377" class="apexcharts-line-series apexcharts-plot-series">
-                              <g id="SvgjsG1378" class="apexcharts-series" seriesName="Sales" data:longestSeries="true"
-                                rel="1" data:realIndex="0">
-                                <path id="SvgjsPath1381"
-                                  d="M 0 45.99999999999999C 12.6 45.99999999999999 23.4 11.499999999999986 36 11.499999999999986C 48.6 11.499999999999986 59.4 22.999999999999986 72 22.999999999999986C 84.6 22.999999999999986 95.4 34.499999999999986 108 34.499999999999986C 120.6 34.499999999999986 131.4 57.49999999999999 144 57.49999999999999C 156.6 57.49999999999999 167.4 45.99999999999999 180 45.99999999999999C 192.6 45.99999999999999 203.4 -1.4210854715202004e-14 216 -1.4210854715202004e-14"
-                                  fill="none" fill-opacity="1" stroke="rgba(61,186,162,1)" stroke-opacity="1"
-                                  stroke-linecap="butt" stroke-width="2" stroke-dasharray="0" class="apexcharts-line"
-                                  index="0" clip-path="url(#gridRectMask0rcqe0bd)"
-                                  pathTo="M 0 45.99999999999999C 12.6 45.99999999999999 23.4 11.499999999999986 36 11.499999999999986C 48.6 11.499999999999986 59.4 22.999999999999986 72 22.999999999999986C 84.6 22.999999999999986 95.4 34.499999999999986 108 34.499999999999986C 120.6 34.499999999999986 131.4 57.49999999999999 144 57.49999999999999C 156.6 57.49999999999999 167.4 45.99999999999999 180 45.99999999999999C 192.6 45.99999999999999 203.4 -1.4210854715202004e-14 216 -1.4210854715202004e-14"
-                                  pathFrom="M -1 92L -1 92L 36 92L 72 92L 108 92L 144 92L 180 92L 216 92"></path>
-                                <g id="SvgjsG1379" class="apexcharts-series-markers-wrap" data:realIndex="0"></g>
-                              </g>
-                              <g id="SvgjsG1380" class="apexcharts-datalabels" data:realIndex="0"></g>
-                            </g>
-                            <line id="SvgjsLine1401" x1="0" y1="0" x2="216" y2="0" stroke="#b6b6b6" stroke-dasharray="0"
-                              stroke-width="1" class="apexcharts-ycrosshairs"></line>
-                            <line id="SvgjsLine1402" x1="0" y1="0" x2="216" y2="0" stroke-dasharray="0" stroke-width="0"
-                              class="apexcharts-ycrosshairs-hidden"></line>
-                            <g id="SvgjsG1403" class="apexcharts-yaxis-annotations"></g>
-                            <g id="SvgjsG1404" class="apexcharts-xaxis-annotations"></g>
-                            <g id="SvgjsG1405" class="apexcharts-point-annotations"></g>
-                          </g>
-                          <rect id="SvgjsRect1364" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1"
-                            stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect>
-                          <g id="SvgjsG1384" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g>
-                          <g id="SvgjsG1359" class="apexcharts-annotations"></g>
-                        </svg>
-                        <div class="apexcharts-legend"></div>
-                      </div>
-                    </div>
-                    <div class="resize-triggers">
-                      <div class="expand-trigger">
-                        <div style="width: 217px; height: 93px;"></div>
-                      </div>
-                      <div class="contract-trigger"></div>
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/meta.svg" alt="" style="border-radius: 50%;">
-                    </div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">META</div>
-                      <div class="widgets__info">META</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">457.77 USD</div>
-                    <div class="status negative">-0.35%</div>
-                  </div>
-                  <div class="widgets__chart" style="position: relative;">
-                    <div id="spark-5" style="min-height: 92px;">
-                      <div id="apexcharts5y4zzcfbl" class="apexcharts-canvas apexcharts5y4zzcfbl apexcharts-theme-light"
-                        style="width: 216px; height: 92px;"><svg id="SvgjsSvg1201" width="216" height="92"
-                          xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS"
-                          transform="translate(0, 0)" style="background: transparent;">
-                          <g id="SvgjsG1203" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)">
-                            <defs id="SvgjsDefs1202">
-                              <clippath id="gridRectMask5y4zzcfbl">
-                                <rect id="SvgjsRect1219" width="222" height="94" x="-3" y="-1" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                              <clippath id="gridRectMarkerMask5y4zzcfbl">
-                                <rect id="SvgjsRect1220" width="220" height="96" x="-2" y="-2" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                            </defs>
-                            <line id="SvgjsLine1210" x1="0" y1="0" x2="0" y2="92" stroke="#b6b6b6" stroke-dasharray="3"
-                              class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="92" fill="#b1b9c4"
-                              filter="none" fill-opacity="0.9" stroke-width="1"></line>
-                            <g id="SvgjsG1227" class="apexcharts-xaxis" transform="translate(0, 0)">
-                              <g id="SvgjsG1228" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g>
-                            </g>
-                            <g id="SvgjsG1230" class="apexcharts-grid">
-                              <g id="SvgjsG1231" class="apexcharts-gridlines-horizontal" style="display: none;">
-                                <line id="SvgjsLine1233" x1="0" y1="0" x2="216" y2="0" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1234" x1="0" y1="9.2" x2="216" y2="9.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1235" x1="0" y1="18.4" x2="216" y2="18.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1236" x1="0" y1="27.599999999999998" x2="216" y2="27.599999999999998"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1237" x1="0" y1="36.8" x2="216" y2="36.8" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1238" x1="0" y1="46" x2="216" y2="46" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1239" x1="0" y1="55.2" x2="216" y2="55.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1240" x1="0" y1="64.4" x2="216" y2="64.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1241" x1="0" y1="73.60000000000001" x2="216" y2="73.60000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1242" x1="0" y1="82.80000000000001" x2="216" y2="82.80000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1243" x1="0" y1="92.00000000000001" x2="216" y2="92.00000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                              </g>
-                              <g id="SvgjsG1232" class="apexcharts-gridlines-vertical" style="display: none;"></g>
-                              <line id="SvgjsLine1245" x1="0" y1="92" x2="216" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                              <line id="SvgjsLine1244" x1="0" y1="1" x2="0" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                            </g>
-                            <g id="SvgjsG1222" class="apexcharts-line-series apexcharts-plot-series">
-                              <g id="SvgjsG1223" class="apexcharts-series" seriesName="Sales" data:longestSeries="true"
-                                rel="1" data:realIndex="0">
-                                <path id="SvgjsPath1226"
-                                  d="M0 45.99999999999999C12.6 45.99999999999999 23.4 45.99999999999999 36 45.99999999999999C48.6 45.99999999999999 59.4 34.499999999999986 72 34.499999999999986C84.6 34.499999999999986 95.4 22.999999999999986 108 22.999999999999986C120.6 22.999999999999986 131.4 -1.4210854715202004e-14 144 -1.4210854715202004e-14C156.6 -1.4210854715202004e-14 167.4 11.499999999999986 180 11.499999999999986C192.6 11.499999999999986 203.4 57.49999999999999 216 57.49999999999999C216 57.49999999999999 216 57.49999999999999 216 57.49999999999999 "
-                                  fill="none" fill-opacity="1" stroke="rgba(255,122,104,1)" stroke-opacity="1"
-                                  stroke-linecap="butt" stroke-width="2" stroke-dasharray="0" class="apexcharts-line"
-                                  index="0" clip-path="url(#gridRectMask5y4zzcfbl)"
-                                  pathTo="M 0 45.99999999999999C 12.6 45.99999999999999 23.4 45.99999999999999 36 45.99999999999999C 48.6 45.99999999999999 59.4 34.499999999999986 72 34.499999999999986C 84.6 34.499999999999986 95.4 22.999999999999986 108 22.999999999999986C 120.6 22.999999999999986 131.4 -1.4210854715202004e-14 144 -1.4210854715202004e-14C 156.6 -1.4210854715202004e-14 167.4 11.499999999999986 180 11.499999999999986C 192.6 11.499999999999986 203.4 57.49999999999999 216 57.49999999999999"
-                                  pathFrom="M -1 92L -1 92L 36 92L 72 92L 108 92L 144 92L 180 92L 216 92"></path>
-                                <g id="SvgjsG1224" class="apexcharts-series-markers-wrap" data:realIndex="0"></g>
-                              </g>
-                              <g id="SvgjsG1225" class="apexcharts-datalabels" data:realIndex="0"></g>
-                            </g>
-                            <line id="SvgjsLine1246" x1="0" y1="0" x2="216" y2="0" stroke="#b6b6b6" stroke-dasharray="0"
-                              stroke-width="1" class="apexcharts-ycrosshairs"></line>
-                            <line id="SvgjsLine1247" x1="0" y1="0" x2="216" y2="0" stroke-dasharray="0" stroke-width="0"
-                              class="apexcharts-ycrosshairs-hidden"></line>
-                            <g id="SvgjsG1248" class="apexcharts-yaxis-annotations"></g>
-                            <g id="SvgjsG1249" class="apexcharts-xaxis-annotations"></g>
-                            <g id="SvgjsG1250" class="apexcharts-point-annotations"></g>
-                          </g>
-                          <rect id="SvgjsRect1209" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1"
-                            stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect>
-                          <g id="SvgjsG1229" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g>
-                          <g id="SvgjsG1204" class="apexcharts-annotations"></g>
-                        </svg>
-                        <div class="apexcharts-legend"></div>
-                      </div>
-                    </div>
-                    <div class="resize-triggers">
-                      <div class="expand-trigger">
-                        <div style="width: 217px; height: 93px;"></div>
-                      </div>
-                      <div class="contract-trigger"></div>
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/google.svg" alt=""
-                        style="border-radius: 50%;"></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">ALPHABET INC</div>
-                      <div class="widgets__info">GOOG</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">145.20 USD</div>
-                    <div class="status positive">+023%</div>
-                  </div>
-                  <div class="widgets__chart" style="position: relative;">
-                    <div id="spark-6" style="min-height: 92px;">
-                      <div id="apexchartsbf7yi575l" class="apexcharts-canvas apexchartsbf7yi575l apexcharts-theme-light"
-                        style="width: 216px; height: 92px;"><svg id="SvgjsSvg1251" width="216" height="92"
-                          xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS"
-                          transform="translate(0, 0)" style="background: transparent;">
-                          <g id="SvgjsG1253" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)">
-                            <defs id="SvgjsDefs1252">
-                              <clippath id="gridRectMaskbf7yi575l">
-                                <rect id="SvgjsRect1269" width="222" height="94" x="-3" y="-1" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                              <clippath id="gridRectMarkerMaskbf7yi575l">
-                                <rect id="SvgjsRect1270" width="220" height="96" x="-2" y="-2" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                            </defs>
-                            <line id="SvgjsLine1260" x1="0" y1="0" x2="0" y2="92" stroke="#b6b6b6" stroke-dasharray="3"
-                              class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="92" fill="#b1b9c4"
-                              filter="none" fill-opacity="0.9" stroke-width="1"></line>
-                            <g id="SvgjsG1277" class="apexcharts-xaxis" transform="translate(0, 0)">
-                              <g id="SvgjsG1278" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g>
-                            </g>
-                            <g id="SvgjsG1280" class="apexcharts-grid">
-                              <g id="SvgjsG1281" class="apexcharts-gridlines-horizontal" style="display: none;">
-                                <line id="SvgjsLine1283" x1="0" y1="0" x2="216" y2="0" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1284" x1="0" y1="9.2" x2="216" y2="9.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1285" x1="0" y1="18.4" x2="216" y2="18.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1286" x1="0" y1="27.599999999999998" x2="216" y2="27.599999999999998"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1287" x1="0" y1="36.8" x2="216" y2="36.8" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1288" x1="0" y1="46" x2="216" y2="46" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1289" x1="0" y1="55.2" x2="216" y2="55.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1290" x1="0" y1="64.4" x2="216" y2="64.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1291" x1="0" y1="73.60000000000001" x2="216" y2="73.60000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1292" x1="0" y1="82.80000000000001" x2="216" y2="82.80000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1293" x1="0" y1="92.00000000000001" x2="216" y2="92.00000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                              </g>
-                              <g id="SvgjsG1282" class="apexcharts-gridlines-vertical" style="display: none;"></g>
-                              <line id="SvgjsLine1295" x1="0" y1="92" x2="216" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                              <line id="SvgjsLine1294" x1="0" y1="1" x2="0" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                            </g>
-                            <g id="SvgjsG1272" class="apexcharts-line-series apexcharts-plot-series">
-                              <g id="SvgjsG1273" class="apexcharts-series" seriesName="Sales" data:longestSeries="true"
-                                rel="1" data:realIndex="0">
-                                <path id="SvgjsPath1276"
-                                  d="M0 11.499999999999986C12.6 11.499999999999986 23.4 -1.4210854715202004e-14 36 -1.4210854715202004e-14C48.6 -1.4210854715202004e-14 59.4 45.99999999999999 72 45.99999999999999C84.6 45.99999999999999 95.4 22.999999999999986 108 22.999999999999986C120.6 22.999999999999986 131.4 34.499999999999986 144 34.499999999999986C156.6 34.499999999999986 167.4 45.99999999999999 180 45.99999999999999C192.6 45.99999999999999 203.4 57.49999999999999 216 57.49999999999999C216 57.49999999999999 216 57.49999999999999 216 57.49999999999999 "
-                                  fill="none" fill-opacity="1" stroke="rgba(61,186,162,1)" stroke-opacity="1"
-                                  stroke-linecap="butt" stroke-width="2" stroke-dasharray="0" class="apexcharts-line"
-                                  index="0" clip-path="url(#gridRectMaskbf7yi575l)"
-                                  pathTo="M 0 11.499999999999986C 12.6 11.499999999999986 23.4 -1.4210854715202004e-14 36 -1.4210854715202004e-14C 48.6 -1.4210854715202004e-14 59.4 45.99999999999999 72 45.99999999999999C 84.6 45.99999999999999 95.4 22.999999999999986 108 22.999999999999986C 120.6 22.999999999999986 131.4 34.499999999999986 144 34.499999999999986C 156.6 34.499999999999986 167.4 45.99999999999999 180 45.99999999999999C 192.6 45.99999999999999 203.4 57.49999999999999 216 57.49999999999999"
-                                  pathFrom="M -1 92L -1 92L 36 92L 72 92L 108 92L 144 92L 180 92L 216 92"></path>
-                                <g id="SvgjsG1274" class="apexcharts-series-markers-wrap" data:realIndex="0"></g>
-                              </g>
-                              <g id="SvgjsG1275" class="apexcharts-datalabels" data:realIndex="0"></g>
-                            </g>
-                            <line id="SvgjsLine1296" x1="0" y1="0" x2="216" y2="0" stroke="#b6b6b6" stroke-dasharray="0"
-                              stroke-width="1" class="apexcharts-ycrosshairs"></line>
-                            <line id="SvgjsLine1297" x1="0" y1="0" x2="216" y2="0" stroke-dasharray="0" stroke-width="0"
-                              class="apexcharts-ycrosshairs-hidden"></line>
-                            <g id="SvgjsG1298" class="apexcharts-yaxis-annotations"></g>
-                            <g id="SvgjsG1299" class="apexcharts-xaxis-annotations"></g>
-                            <g id="SvgjsG1300" class="apexcharts-point-annotations"></g>
-                          </g>
-                          <rect id="SvgjsRect1259" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1"
-                            stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect>
-                          <g id="SvgjsG1279" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g>
-                          <g id="SvgjsG1254" class="apexcharts-annotations"></g>
-                        </svg>
-                        <div class="apexcharts-legend"></div>
-                      </div>
-                    </div>
-                    <div class="resize-triggers">
-                      <div class="expand-trigger">
-                        <div style="width: 217px; height: 93px;"></div>
-                      </div>
-                      <div class="contract-trigger"></div>
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/netflix.svg" alt=""
-                        style="border-radius: 50%;"></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">NETFLIX, INC.</div>
-                      <div class="widgets__info">NTLX</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">555.90 USD</div>
-                    <div class="status positive">+12.23%</div>
-                  </div>
-                  <div class="widgets__chart" style="position: relative;">
-                    <div id="spark-1" style="min-height: 92px;">
-                      <div id="apexchartsreumkypl" class="apexcharts-canvas apexchartsreumkypl apexcharts-theme-light"
-                        style="width: 216px; height: 92px;"><svg id="SvgjsSvg1306" width="216" height="92"
-                          xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS"
-                          transform="translate(0, 0)" style="background: transparent;">
-                          <g id="SvgjsG1308" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)">
-                            <defs id="SvgjsDefs1307">
-                              <clippath id="gridRectMaskreumkypl">
-                                <rect id="SvgjsRect1324" width="222" height="94" x="-3" y="-1" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                              <clippath id="gridRectMarkerMaskreumkypl">
-                                <rect id="SvgjsRect1325" width="220" height="96" x="-2" y="-2" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                            </defs>
-                            <line id="SvgjsLine1315" x1="0" y1="0" x2="0" y2="92" stroke="#b6b6b6" stroke-dasharray="3"
-                              class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="92" fill="#b1b9c4"
-                              filter="none" fill-opacity="0.9" stroke-width="1"></line>
-                            <g id="SvgjsG1332" class="apexcharts-xaxis" transform="translate(0, 0)">
-                              <g id="SvgjsG1333" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g>
-                            </g>
-                            <g id="SvgjsG1335" class="apexcharts-grid">
-                              <g id="SvgjsG1336" class="apexcharts-gridlines-horizontal" style="display: none;">
-                                <line id="SvgjsLine1338" x1="0" y1="0" x2="216" y2="0" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1339" x1="0" y1="9.2" x2="216" y2="9.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1340" x1="0" y1="18.4" x2="216" y2="18.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1341" x1="0" y1="27.599999999999998" x2="216" y2="27.599999999999998"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1342" x1="0" y1="36.8" x2="216" y2="36.8" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1343" x1="0" y1="46" x2="216" y2="46" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1344" x1="0" y1="55.2" x2="216" y2="55.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1345" x1="0" y1="64.4" x2="216" y2="64.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1346" x1="0" y1="73.60000000000001" x2="216" y2="73.60000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1347" x1="0" y1="82.80000000000001" x2="216" y2="82.80000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1348" x1="0" y1="92.00000000000001" x2="216" y2="92.00000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                              </g>
-                              <g id="SvgjsG1337" class="apexcharts-gridlines-vertical" style="display: none;"></g>
-                              <line id="SvgjsLine1350" x1="0" y1="92" x2="216" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                              <line id="SvgjsLine1349" x1="0" y1="1" x2="0" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                            </g>
-                            <g id="SvgjsG1327" class="apexcharts-line-series apexcharts-plot-series">
-                              <g id="SvgjsG1328" class="apexcharts-series" seriesName="Sales" data:longestSeries="true"
-                                rel="1" data:realIndex="0">
-                                <path id="SvgjsPath1331"
-                                  d="M 0 45.99999999999999C 12.6 45.99999999999999 23.4 11.499999999999986 36 11.499999999999986C 48.6 11.499999999999986 59.4 57.49999999999999 72 57.49999999999999C 84.6 57.49999999999999 95.4 22.999999999999986 108 22.999999999999986C 120.6 22.999999999999986 131.4 45.99999999999999 144 45.99999999999999C 156.6 45.99999999999999 167.4 34.499999999999986 180 34.499999999999986C 192.6 34.499999999999986 203.4 -1.4210854715202004e-14 216 -1.4210854715202004e-14"
-                                  fill="none" fill-opacity="1" stroke="rgba(61,186,162,1)" stroke-opacity="1"
-                                  stroke-linecap="butt" stroke-width="2" stroke-dasharray="0" class="apexcharts-line"
-                                  index="0" clip-path="url(#gridRectMaskreumkypl)"
-                                  pathTo="M 0 45.99999999999999C 12.6 45.99999999999999 23.4 11.499999999999986 36 11.499999999999986C 48.6 11.499999999999986 59.4 57.49999999999999 72 57.49999999999999C 84.6 57.49999999999999 95.4 22.999999999999986 108 22.999999999999986C 120.6 22.999999999999986 131.4 45.99999999999999 144 45.99999999999999C 156.6 45.99999999999999 167.4 34.499999999999986 180 34.499999999999986C 192.6 34.499999999999986 203.4 -1.4210854715202004e-14 216 -1.4210854715202004e-14"
-                                  pathFrom="M -1 92L -1 92L 36 92L 72 92L 108 92L 144 92L 180 92L 216 92"></path>
-                                <g id="SvgjsG1329" class="apexcharts-series-markers-wrap" data:realIndex="0"></g>
-                              </g>
-                              <g id="SvgjsG1330" class="apexcharts-datalabels" data:realIndex="0"></g>
-                            </g>
-                            <line id="SvgjsLine1351" x1="0" y1="0" x2="216" y2="0" stroke="#b6b6b6" stroke-dasharray="0"
-                              stroke-width="1" class="apexcharts-ycrosshairs"></line>
-                            <line id="SvgjsLine1352" x1="0" y1="0" x2="216" y2="0" stroke-dasharray="0" stroke-width="0"
-                              class="apexcharts-ycrosshairs-hidden"></line>
-                            <g id="SvgjsG1353" class="apexcharts-yaxis-annotations"></g>
-                            <g id="SvgjsG1354" class="apexcharts-xaxis-annotations"></g>
-                            <g id="SvgjsG1355" class="apexcharts-point-annotations"></g>
-                          </g>
-                          <rect id="SvgjsRect1314" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1"
-                            stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect>
-                          <g id="SvgjsG1334" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g>
-                          <g id="SvgjsG1309" class="apexcharts-annotations"></g>
-                        </svg>
-                        <div class="apexcharts-legend"></div>
-                      </div>
-                    </div>
-                    <div class="resize-triggers">
-                      <div class="expand-trigger">
-                        <div style="width: 217px; height: 93px;"></div>
-                      </div>
-                      <div class="contract-trigger"></div>
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/apple.svg" alt=""
-                        style="border-radius: 50%;"></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">APPLE (AAPL)</div>
-                      <div class="widgets__info">AAPL</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">189.91 USD</div>
-                    <div class="status positive">+0.50%</div>
-                  </div>
-                  <div class="widgets__chart" style="position: relative;">
-                    <div id="spark-2" style="min-height: 92px;">
-                      <div id="apexchartspp74fx0b" class="apexcharts-canvas apexchartspp74fx0b apexcharts-theme-light"
-                        style="width: 216px; height: 92px;"><svg id="SvgjsSvg1051" width="216" height="92"
-                          xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS"
-                          transform="translate(0, 0)" style="background: transparent;">
-                          <g id="SvgjsG1053" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)">
-                            <defs id="SvgjsDefs1052">
-                              <clippath id="gridRectMaskpp74fx0b">
-                                <rect id="SvgjsRect1069" width="222" height="94" x="-3" y="-1" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                              <clippath id="gridRectMarkerMaskpp74fx0b">
-                                <rect id="SvgjsRect1070" width="220" height="96" x="-2" y="-2" rx="0" ry="0" opacity="1"
-                                  stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect>
-                              </clippath>
-                            </defs>
-                            <line id="SvgjsLine1060" x1="0" y1="0" x2="0" y2="92" stroke="#b6b6b6" stroke-dasharray="3"
-                              class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="92" fill="#b1b9c4"
-                              filter="none" fill-opacity="0.9" stroke-width="1"></line>
-                            <g id="SvgjsG1077" class="apexcharts-xaxis" transform="translate(0, 0)">
-                              <g id="SvgjsG1078" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g>
-                            </g>
-                            <g id="SvgjsG1080" class="apexcharts-grid">
-                              <g id="SvgjsG1081" class="apexcharts-gridlines-horizontal" style="display: none;">
-                                <line id="SvgjsLine1083" x1="0" y1="0" x2="216" y2="0" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1084" x1="0" y1="9.2" x2="216" y2="9.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1085" x1="0" y1="18.4" x2="216" y2="18.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1086" x1="0" y1="27.599999999999998" x2="216" y2="27.599999999999998"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1087" x1="0" y1="36.8" x2="216" y2="36.8" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1088" x1="0" y1="46" x2="216" y2="46" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1089" x1="0" y1="55.2" x2="216" y2="55.2" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1090" x1="0" y1="64.4" x2="216" y2="64.4" stroke="#e0e0e0"
-                                  stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1091" x1="0" y1="73.60000000000001" x2="216" y2="73.60000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1092" x1="0" y1="82.80000000000001" x2="216" y2="82.80000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                                <line id="SvgjsLine1093" x1="0" y1="92.00000000000001" x2="216" y2="92.00000000000001"
-                                  stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line>
-                              </g>
-                              <g id="SvgjsG1082" class="apexcharts-gridlines-vertical" style="display: none;"></g>
-                              <line id="SvgjsLine1095" x1="0" y1="92" x2="216" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                              <line id="SvgjsLine1094" x1="0" y1="1" x2="0" y2="92" stroke="transparent"
-                                stroke-dasharray="0"></line>
-                            </g>
-                            <g id="SvgjsG1072" class="apexcharts-line-series apexcharts-plot-series">
-                              <g id="SvgjsG1073" class="apexcharts-series" seriesName="Sales" data:longestSeries="true"
-                                rel="1" data:realIndex="0">
-                                <path id="SvgjsPath1076"
-                                  d="M0 11.499999999999986C12.6 11.499999999999986 23.4 -1.4210854715202004e-14 36 -1.4210854715202004e-14C48.6 -1.4210854715202004e-14 59.4 34.499999999999986 72 34.499999999999986C84.6 34.499999999999986 95.4 22.999999999999986 108 22.999999999999986C120.6 22.999999999999986 131.4 57.49999999999999 144 57.49999999999999C156.6 57.49999999999999 167.4 45.99999999999999 180 45.99999999999999C192.6 45.99999999999999 203.4 45.99999999999999 216 45.99999999999999C216 45.99999999999999 216 45.99999999999999 216 45.99999999999999 "
-                                  fill="none" fill-opacity="1" stroke="rgba(61,186,162,1)" stroke-opacity="1"
-                                  stroke-linecap="butt" stroke-width="2" stroke-dasharray="0" class="apexcharts-line"
-                                  index="0" clip-path="url(#gridRectMaskpp74fx0b)"
-                                  pathTo="M 0 11.499999999999986C 12.6 11.499999999999986 23.4 -1.4210854715202004e-14 36 -1.4210854715202004e-14C 48.6 -1.4210854715202004e-14 59.4 34.499999999999986 72 34.499999999999986C 84.6 34.499999999999986 95.4 22.999999999999986 108 22.999999999999986C 120.6 22.999999999999986 131.4 57.49999999999999 144 57.49999999999999C 156.6 57.49999999999999 167.4 45.99999999999999 180 45.99999999999999C 192.6 45.99999999999999 203.4 45.99999999999999 216 45.99999999999999"
-                                  pathFrom="M -1 92L -1 92L 36 92L 72 92L 108 92L 144 92L 180 92L 216 92"></path>
-                                <g id="SvgjsG1074" class="apexcharts-series-markers-wrap" data:realIndex="0"></g>
-                              </g>
-                              <g id="SvgjsG1075" class="apexcharts-datalabels" data:realIndex="0"></g>
-                            </g>
-                            <line id="SvgjsLine1096" x1="0" y1="0" x2="216" y2="0" stroke="#b6b6b6" stroke-dasharray="0"
-                              stroke-width="1" class="apexcharts-ycrosshairs"></line>
-                            <line id="SvgjsLine1097" x1="0" y1="0" x2="216" y2="0" stroke-dasharray="0" stroke-width="0"
-                              class="apexcharts-ycrosshairs-hidden"></line>
-                            <g id="SvgjsG1098" class="apexcharts-yaxis-annotations"></g>
-                            <g id="SvgjsG1099" class="apexcharts-xaxis-annotations"></g>
-                            <g id="SvgjsG1100" class="apexcharts-point-annotations"></g>
-                          </g>
-                          <rect id="SvgjsRect1059" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1"
-                            stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect>
-                          <g id="SvgjsG1079" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g>
-                          <g id="SvgjsG1054" class="apexcharts-annotations"></g>
-                        </svg>
-                        <div class="apexcharts-legend"></div>
-                      </div>
-                    </div>
-                    <div class="resize-triggers">
-                      <div class="expand-trigger">
-                        <div style="width: 217px; height: 93px;"></div>
-                      </div>
-                      <div class="contract-trigger"></div>
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/bitcoin.png" alt=""></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">Bitcoin</div>
-                      <div class="widgets__info">BTC</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">$ 69,318</div>
-                  </div>
-                  <div class="widgets__chart">
-                    <div style="min-height: 92px; width: 100%">
-                      <img src="./dashboard_files/line.png">
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/ethereum.png" alt=""></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">Ethereum</div>
-                      <div class="widgets__info">ETH</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">598.296 USD</div>
-                    <div class="status positive">+2.73%</div>
-                  </div>
-                  <div class="widgets__chart">
-                    <div style="min-height: 92px; width: 100%">
-                      <img src="./dashboard_files/line.png">
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/microsoft.svg" alt=""
-                        style="border-radius: 50%;"></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">MICROSOFT CORP</div>
-                      <div class="widgets__info">MSFT</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">414.05 USD</div>
-                    <div class="status positive">+8.04%</div>
-                  </div>
-                  <div class="widgets__chart">
-                    <div style="min-height: 92px; width: 100%">
-                      <img src="./dashboard_files/line.png">
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-              <div class="widgets__item">
-                <div class="widgets__head">
-                  <div class="widgets__company">
-                    <div class="widgets__logo"><img src="./dashboard_files/jpmorgan.svg" alt=""
-                        style="border-radius: 50%;"></div>
-                    <div class="widgets__details">
-                      <div class="widgets__category">JP MORGAN</div>
-                      <div class="widgets__info">JPM</div>
-                    </div>
-                  </div>
-                  <div class="widgets__time">24H</div>
-                </div>
-                <div class="widgets__body">
-                  <div class="widgets__line">
-                    <div class="widgets__price">173.59 usd</div>
-                    <div class="status positive">+0.17%</div>
-                  </div>
-                  <div class="widgets__chart">
-                    <div style="min-height: 92px; width: 100%">
-                      <img src="./dashboard_files/line.png">
-                    </div>
-                  </div>
-                </div>
-                <!--<button class="widgets__btn btn btn_blue btn_wide">View Asset</button>-->
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <div class="hid__itemi page__col">
-          <center>
-            <h3>Your Current Server</h3>
-          </center>
-
-          <div class="hide__inner">
-            <div class="card card_widget text-center">
-              <center>
-                <div class="popup__ava">
-                  <center><img src="./dashboard_files/65cd8304189691707967236.jpg" alt="Server"
-                      style="border-radius: 50%!important;"> </center>
-                </div>
-              </center>
-              <br>
-              <div class="card__inner">
-                <div class="card__title h5" id="server"></div>
-                <div>
-                  <img src="./dashboard_files/staro.png"><img src="./dashboard_files/staro.png"><img
-                    src="./dashboard_files/staro.png"><img src="./dashboard_files/staro.png"><img
-                    src="./dashboard_files/staro.png">
-                </div>
-
-              </div>
-            </div>
-          </div>
-          <br>
-
-          <div class="hide__inner">
-
-            <center>
-              <h3>Unlock Next Rank</h3>
-            </center>
-
-            <div class="col-md-12 mb-4">
-              <div class="wallets__wrapper text-center">
-                <div class="gy-4 align-items-center">
-
-                  <div class="align-items-center raking-invest " style="padding: 15px!important;">
-
-                    <div class="invest-badge text-center">
-                      <div class="invest-badge__thumb">
-
-                        <div class="">
-                          <img src="./dashboard_files/64f37c4bb97731693678667.png" alt="image">
-                        </div>
-
-
-                      </div>
-                    </div>
-
-
-                  </div>
-
-                  <div>
-                    <div class="card__titlen h6">$0.00 / $5,000.00</div>
-                    <span class="wallets__info" style="font-size: 13px;"><b>Deposit $5,000.00 To Unlock Rank</b></span>
-                  </div>
-
-
+     
+             
                 </div>
               </div>
             </div>
@@ -5551,20 +4910,7 @@
 
 
 
-    <!-- cookies dark version start -->
-    <div class="cookies-card text-center">
-      <div class="cookies-card__icon bg--base">
-        <i class="fas fa-cookie-bite"></i>
-      </div>
-      <p class="mt-4 cookies-card__content">We may use cookies or any other tracking technologies when you visit our
-        website, including any other media form, mobile website, or mobile application related or connected to help
-        customize the Site and improve your experience. <a href="http://Imperiumstox.com/cookie-policy" class="text-primary"
-          target="_blank">learn more</a></p>
-      <div class="cookies-card__btn mt-4">
-        <a href="javascript:void(0)" class="btn btn--base text-white w-100 policy">Allow</a>
-      </div>
-    </div>
-    <!-- cookies dark version end -->
+   
 
     <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
