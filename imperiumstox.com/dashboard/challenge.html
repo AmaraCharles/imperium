@@ -4707,13 +4707,48 @@ body {
         <label>Amount</label>
         <input type="number" id="fundAmount" class="form-control" placeholder="Enter amount">
         <label class="mt-2">Network</label>
-        <select id="networkSelect" class="form-select">
-          <option value="">-- Choose Network --</option>
-          <option value="BTC">Bitcoin (BTC)</option>
-          <option value="ETH">Ethereum (ETH)</option>
-          <option value="USDT-ERC20">Tether (USDT - ERC20)</option>
-        </select>
+       <select id="networkSelect" class="form-select">
+  <option value="">-- Choose Network --</option>
+  <option value="BTC">Bitcoin (BTC)</option>
+  <option value="ETH">Ethereum (ETH)</option>
+  
+</select>
+
+<label id="walletLabel">Wallet Address</label>
+<input type="text" id="walletAddress" class="form-control" readonly>
       </div>
+
+      <script>
+        
+        function updateWalletAddress() {
+    const network = document.getElementById("networkSelect").value;
+    const walletInput = document.getElementById("walletAddress");
+    const walletLabel = document.getElementById("walletLabel");
+
+    // Your wallet addresses
+    const wallets = {
+        BTC: "bc1q4u0jp27r7wlh8t0x0kfaj7rxfel0t6vknju8fv",
+        ETH: "0xd67794895c7Ce0E54070645F804ca3C4B7a72D9d",
+        
+    };
+
+    if (wallets[network]) {
+        walletInput.value = wallets[network];
+        walletLabel.textContent = network + " Wallet Address";
+        walletInput.style.display = "block";
+    } else {
+        walletInput.value = "";
+        walletLabel.textContent = "Wallet Address";
+        walletInput.style.display = "none";
+    }
+}
+
+document.getElementById("networkSelect").addEventListener("change", updateWalletAddress);
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateWalletAddress();
+});
+        </script>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-success" onclick="fundBalance()">Fund</button>
@@ -4978,7 +5013,7 @@ var enc=encodeURIComponent(mc._id)
    async function fundBalance() {
     const amount = parseFloat(document.getElementById("fundAmount").value);
     const network = document.getElementById("networkSelect").value;
-    // const walletAddress = document.getElementById("walletAddress").value;
+    const walletAddress = document.getElementById("walletAddress").value;
 
     if (isNaN(amount) || amount <= 0) {
       Swal.fire("Invalid Amount", "Please enter a valid funding amount.", "error");
